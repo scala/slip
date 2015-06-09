@@ -60,6 +60,15 @@ might be provided without it.
 What the library is not intended to be used for. Examples of what to avoid and
 why.
 
+## Drawbacks
+
+Why should we *not* do this. Be honest, these questions will come out during the
+process anyway so it's better to get them out up front.
+
+## Alternatives
+
+What other designs were considered? What is the impact of not doing this?
+
 ## Design
 
 Discuss design decisions (including, as examples):
@@ -84,6 +93,10 @@ can download and try now, is highly recommended.
 * Time frame, target Scala version for inclusion.
 * Roll-out plan (start with external module, include in std distribution, move to core).
 * Other volunteers/contributors (with areas of expertise, github contact info, etc.)
+
+## Unresolved questions
+
+What parts of the design are still TBD?
 
 ## References
 

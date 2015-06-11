@@ -29,7 +29,7 @@ putting their guidelines together.
 ## Active SLIP List
 [Active SLIP List]: #active-slip-list
 
-* [0008-emoticons.md](text/0008-emoticons.md)
+* [0022-async.md](text/0022-async.md)
 
 ## Table of Contents
 [Table of Contents]: #table-of-contents
@@ -87,11 +87,7 @@ having a consistent impact on the project requires concerted effort
 toward consensus-building.
 
 The most common preparations for writing and submitting a SLIP include
-talking the idea over on [scala-internals][discuss] or on the scala/slip 
-gitter channel, 
-filing and discusssing ideas on the [Scala issue tracker][issues], and 
-occasionally posting
-'pre-SLIPs' on [scala-internals][discuss] for early review.
+talking the idea over on [scala-internals][discuss] or on the [scala/slip gitter channel](https://gitter.im/scala/slip), filing and discusssing ideas on the [Scala issue tracker][issues], and occasionally posting 'pre-SLIPs' on [scala-internals][discuss] for early review.
 
 As a rule of thumb, receiving encouraging feedback from long-standing
 project developers, and particularly members of the core team
@@ -108,9 +104,9 @@ first get the SLIP merged into the SLIP repo as a markdown file. At that point
 the SLIP is 'active' and may be implemented with the goal of eventual inclusion
 into the core libs.
 
-* Fork the SLIP repo http://github.com/scala-slip
+* Fork the SLIP repo http://github.com/scala/slip
 * Copy `slip-template.md` to `text/0000-my-feature.md` (where
-'my-feature' is descriptive. don't assign a SLIP number yet).
+'my-feature' is descriptive. don't assign a SLIP number yet, use `0000`).
 * Fill in the SLIP. Put care into the details: SLIPs that do not
 present convincing motivation, demonstrate understanding of the
 impact of the design, or are disingenuous about the drawbacks or
@@ -129,7 +125,7 @@ any comments. The shepherd assigned to your SLIP should help you get
 feedback from Scala developers as well.
 * The shepherd may schedule meetings with the author and/or relevant
 stakeholders to discuss the issues in greater detail, and in some
-cases the topic may be discussed at the larger [monthly meeting]. In
+cases the topic may be discussed at the larger monthly meeting. In
 either case a summary from the meeting will be posted back to the SLIP
 pull request.
 * Once both proponents and opponents have clarified and defended
@@ -198,7 +194,7 @@ posted back to the SLIP pull request.
 The core team makes final decisions about SLIPs after the benefits and
 drawbacks are well understood. These decisions can be made at any
 time, but the core team will regularly issue decisions on at least a
-weekly basis. When a decision is made, the SLIP PR will either be
+monthly basis. When a decision is made, the SLIP PR will either be
 merged or closed, in either case with a comment describing the
 rationale for the decision. The comment should largely be a summary of
 discussion already on the comment thread.
@@ -247,4 +243,3 @@ The process is intended to be as lightweight as reasonable for the
 present circumstances. As usual, we are trying to let the process be
 driven by consensus and community norms, not impose more structure than
 necessary.
-

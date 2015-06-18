@@ -1,13 +1,7 @@
 # SLIP-NNN - IO Target
 
 **By: Omid Bakhshandeh**
-
-This document is provided as a template to get you started. Feel free to add, augment,
-remove, restructure and otherwise adapt the structure for what you need after cloning it.
-Create a fork of this repository and a new feature branch called slip/NNN (where
-NNN is the SLIP number).
-This document should be then be copied into slip-NNN/slip-NNN.md. You can also use
-this slip-NNN directory to hold any supporting documentation, code and tests.
+This is a proposal for adding `scala.io.Target` to Scala std.
 
 ## History
 

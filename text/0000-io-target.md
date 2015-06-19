@@ -40,6 +40,28 @@ toURL(url: URL)(implicit codec: Codec): BufferedTarget // is it possible to star
                                                        //or something like that?
 ```
 
+### Example in Java
+
+Here is a simple example from java:
+
+```java
+impor java.io.*
+Charset charset = Charset.forName("US-ASCII");
+File file = new File(...);
+String s = ...;
+try (BufferedWriter writer = Files.newBufferedWriter(file, charset)) {
+    writer.write(s, 0, s.length());
+} catch (IOException x) {
+    System.err.format("IOException: %s%n", x);
+}
+```
+and scala version could be something like:
+
+```scala
+impor scala.io.Target._
+String s = ...
+Target.toFile(new File(...), s) // File is Scala file, not Java file
+```
 
 ## Drawbacks
 

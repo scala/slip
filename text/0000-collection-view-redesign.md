@@ -351,6 +351,16 @@ There were a few alternatives attempted before the current proposal:
    operation later.   While this is still possible, we feel adding a
    transducer + alternative view implementation does not prevent such a
    solution from also being viable.
+3. Using `java.util.stream`.   Java provides a vew similar mechanism to
+   Transducers in Java 8, called `Collector`.  These collectors represent
+   a more limited subset of what's expressible in Transducer, Additionally
+   the current proposal could also be used from JDK7.  `java.util.Stream`
+   does allow more specialization than the current proposal, but we think
+   this is fixable and Transducers provide enough flexibility (with little
+     maintenance) to warrant their inclussion.  Additonally, we think
+     Scala's view API to be superior in elegance to the `java.util.stream`
+     API, specifically in the case where `flatMap`s are required.
+
 
 Additionally, there are a few Transducer libraries out in the wild:
 

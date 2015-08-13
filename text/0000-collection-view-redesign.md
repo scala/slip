@@ -89,6 +89,21 @@ println(x.take(1).mkString("")) // prints: ""
 println(y.mkString("")) // throws IndexOutOfBoundsException
 ```
 
+This is basically due to the view remembering indicies when the underlying
+collection is mutable.   However, the current view implementation also
+requires memoizing the underlying collection for certain operations, here's
+an example:
+
+```scala
+object foo extends Traversable[Int] {
+   override def foreach[U](f: Int => U): Unit = {
+      System.err.println("Making stuff"); f(1); f(2)
+   }
+}
+val y = foo.view.scanLeft(0)(_+_) // Note: this prints `Making stuff`
+y.head // Note: This will never call the original foreach.
+```
+
 *Note: This issue is actually due to memoizing indicies in the view implementation.*
 
 ### Problem 3 - Maintenance issues

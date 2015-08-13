@@ -46,8 +46,8 @@ design, which has motivated several of us to each try our own hand at alternativ
 
 ### Problem 1 - Unwanted Memoization
 
-Currently views will always memoize intermediate values.   One of the goals of
-the library is to lazily defer computation until it's needed.  However,
+Currently views will sporadically memoize intermediate values.   One of the goals
+of the library is to consistently defer computation until it's needed.  However,
 sometimes the intermediate state is not something that needs to be remembered.
 
 An example:
@@ -63,8 +63,13 @@ val pittsburghUserCount =
 In this scenario, the view is simply used to chain together two simple collection
 transformations and one computation.  The view is being used in an attempt to
 prevent creating intermediate collection values, thereby improving performance
-of the whole computation.   However, the intermediate collections are essential
-still created in the view.
+of the whole computation.   It is not expected that the view will be shared/used
+beyond this simple definition.  We expect this to be the primary use case
+for views.
+
+While we also expect persistent views of collections to be a valid use case,
+we think the library should be tuned for the above use case, while allowing the
+second.
 
 
 ### Problem 2 - Mutable collections
@@ -83,6 +88,8 @@ x.clear()
 println(x.take(1).mkString("")) // prints: ""
 println(y.mkString("")) // throws IndexOutOfBoundsException
 ```
+
+*Note: This issue is actually due to memoizing indicies in the view implementation.*
 
 ### Problem 3 - Maintenance issues
 

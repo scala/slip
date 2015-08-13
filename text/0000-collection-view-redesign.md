@@ -144,6 +144,7 @@ This `Transformed` trait is one of the tricks used to ensure that views can stag
 operations and share implementations between each staged result.
 
 This results in bugs like [SI-4190](https://issues.scala-lang.org/browse/SI-4190)
+and [SI-4332](https://issues.scala-lang.org/browse/SI-4332)
 whereby the parent-behavior of a view is getting used through inheritance, when
 in fact we'd prefer a compile time error telling us to implement a missing method.
 

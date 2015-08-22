@@ -8,6 +8,11 @@
 
 (jump forward to: [Table of Contents], [Active SLIP List])
 
+## Related resources
+
+* [Gitter channel](https://gitter.im/scala/slip)
+* [committee meetings YouTube channel](https://www.youtube.com/channel/UCn_8OeZlf5S6sqCqntAvaIw)
+
 ## When do I need a SLIP?
 Many changes, including bug fixes and documentation improvements can be 
 implemented and reviewed via the normal GitHub pull request workflow. See the

@@ -34,7 +34,8 @@ putting their guidelines together.
 ## Active SLIP List
 [Active SLIP List]: #active-slip-list
 
-* [0022-async.md](text/0022-async.md)
+* [Async](http://docs.scala-lang.org/sips/pending/async.html)
+  * originally proposed as a SIP, before the SLIP process was established
 
 ## Table of Contents
 [Table of Contents]: #table-of-contents

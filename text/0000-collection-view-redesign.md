@@ -288,14 +288,38 @@ println(x.take(1).mkString("")) // prints: ""
 println(y.mkString("")) // prints: "", previously threw IndexOutOfBoundsException
 ```
 
-TODO - More examples
+TODO - More examples needed?
 
 ### Comparison Examples
 
-Code demonstrating why the library is needed, how equivalent functionality
-might be provided without it.
+There are a class of problems where `Iterator` is a wholly better solution than
+`View`, which is the case even today with scala's existing views.  For example:
 
-TODO - Iterators?
+```scala
+
+val users: Seq[User] = ...
+val salesPeople: Seq[Salesperson] = ...
+
+val assignments: Iterator[(User, Salesperson)] =
+  (users.iterator.filterNot(_.hasSalesPerson) zip salesPeople.iterator)
+
+assigments foreach { case(u, s) => u.assignTo(s) }
+```
+
+When you need to co-iterate between two different collections, iterators
+provide a far more efficient solution to the problem.
+
+However, iterators don't support the full set of collection operations.
+
+```scala
+val activePittsburghSalesPeopleByTerritory: Map[String, Seq[salesPerson]] = ...
+users.filter(isInPittsburgh).map(_.salesPerson).groupBy(_.territory)
+```
+
+Here, groupBy is unavailble to the `Iterator` interface.
+
+// TODO - Additionally discuss preserving types, and other scenarios where
+//        a fold is more applicable, e.g. when you cannot create an Iterator.
 
 ### Counter-Examples
 
@@ -405,9 +429,21 @@ There were a few alternatives attempted before the current proposal:
      API, specifically in the case where `flatMap`s are required.
 
 
-Additionally, there are a few Transducer libraries out in the wild:
+Additionally, there are a few Transducer libraries out in the wild, each with
+various tradeoffs.
 
-TODO - List these
+- [knutwalker/transducers-scala](https://github.com/knutwalker/transducers-scala)
+  * Attempt to be fully generic/complete solution for all things transducer.
+    i.e. spans more use cases than the proposed interface.  Far better
+    for all things transducer, not quite as nice, specifically, for view
+    replacement.
+  * integrates into several popular libraries which are outside scala's
+    core set (e.g. RxJava)
+  * Handles specialization.
+  * Larger code footprint.  
+- [David Hall's NLP transducers](https://github.com/dlwh/scalanlp-fst)
+  * Built-in transducers for NLP
+  * Designed for the scalanlp set of libraries
 
 ## Design
 
@@ -516,7 +552,7 @@ abstract class StagedCollectionOps[E] {
   /** The type of the elements of the source sequence */
   type SourceElement
 
-  /** The source collection.  TODO - can we leave this unbound? */
+  /** The source collection. */
   val source: GenTraversableOnce[SourceElement]
 
   /** The fold transformer, as a collection of operations. */
@@ -705,7 +741,7 @@ This proposal leaves open for discussion/contribution several things:
 4. [Alternative Libraries/Implementations][4]
 5. [Discussion forum/post/gitter/IRC][5]
 
-TODO
+TODO - do we need more references?
 
 [1]: http://github.com/jsuereth/viewducers "Viewducers"
 [2]: http://www.scala-lang.org/api/ "Scaladoc"

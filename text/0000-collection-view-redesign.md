@@ -332,8 +332,7 @@ and specifically for collections which are finite.
 The implementation proposed here has a few limitations which we'll discuss in order:
 
 1. Parallelization
-2. Specialization
-3. Slicing
+2. Slicing
 
 
 ### Parallel Collections and views
@@ -361,11 +360,6 @@ require/enforce parallel semantics, at the expense of non-parallel performance.
 We have opted to ensure single-threaded performance is optimal, while allowing
 parallel behavior to exist, which we feel mirrors a lot of design choices
 already made in the Scala collections library.
-
-
-# Speicalization
-
-TODO - Discuss
 
 # Slicing
 

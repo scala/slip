@@ -191,6 +191,10 @@ Here we'd like to propose a new view library with the following goals:
   for views.
 * Views should NOT memoize results by default, but instead allow the User to
   selectively memoize.
+* Views are meant to optimise a set of use cases where a chain of
+  collection-transforming operations is performed, specifically, where a
+  highly customized `fold` could be used to replace the operation, and where
+  the standard `Iterator` interface is insufficient or less clear.
 
 The new library should take advantage of the lessons learned in Scala's
 current view library.  They should provide a maximum of flexibility,
@@ -291,11 +295,11 @@ TODO - More examples
 Code demonstrating why the library is needed, how equivalent functionality
 might be provided without it.
 
-TODO
+TODO - Iterators?
 
 ### Counter-Examples
 
-A view library is not a substitute for proper lazily evaluate collections.
+A view library is not a substitute for proper lazily evaluated collections.
 Views are solely about deferring operations to be performed later, that is
 chaining together a sequence of low-order transformation into a higher-level
 algorithm for your computation.
@@ -329,6 +333,7 @@ The implementation proposed here has a few limitations which we'll discuss in or
 
 1. Parallelization
 2. Specialization
+3. Slicing
 
 
 ### Parallel Collections and views
@@ -362,6 +367,26 @@ already made in the Scala collections library.
 
 TODO - Discuss
 
+# Slicing
+
+This library looses a modest amount of performance in the presence of slicing.
+For example, if we have the following:
+
+```scala
+val x = ArrayBuffer(...).slice(20,500)
+```
+
+Then the current mechanism will ALWAYS have a constnat O(N) (wehre N =
+  the initial slice number, e.g. 20) overhead on evaluation.  The current
+  view implementations can reduce this overhead.   While the overhead can be
+  significant for some operations, there are two things we've found:
+
+1. The overhead is less than the cost of attempting to special-case slice
+    within the library.
+2. The overhead, for some particularly offensive scenarios, is on the order of
+   30% over a custom solution.   We think this represents a minor drawback, and
+   something that could be recovered via some specific "slice view" mecahnism
+   that is outside the scope of this proposal.
 
 ## Alternatives
 
@@ -373,14 +398,15 @@ There were a few alternatives attempted before the current proposal:
    be interpreted (at runtime or compile-time) into a more efficient
    operation later.   While this is still possible, we feel adding a
    transducer + alternative view implementation does not prevent such a
-   solution from also being viable.
+   solution from also being viable.  Additionally this proposal represents,
+   what we feel, is a much easier to maintain solution.
 3. Using `java.util.stream`.   Java provides a vew similar mechanism to
    Transducers in Java 8, called `Collector`.  These collectors represent
    a more limited subset of what's expressible in Transducer, Additionally
    the current proposal could also be used from JDK7.  `java.util.Stream`
    does allow more specialization than the current proposal, but we think
    this is fixable and Transducers provide enough flexibility (with little
-     maintenance) to warrant their inclussion.  Additonally, we think
+     maintenance) to warrant their inclusion.  Additionally, we think
      Scala's view API to be superior in elegance to the `java.util.stream`
      API, specifically in the case where `flatMap`s are required.
 
@@ -402,7 +428,16 @@ A new `view` instance, therefore, is set of:
 * A Builder for the result collection
 
 We can provide an almost identical API to the one which exists for views today,
-while maintaining efficiency and offering flexibility in memoization.
+simply by capturing the `CanBuildFrom` that is implicit in most collection
+operations and updating our state to retain it.   We do not have to remember
+the input collection type, as long as we have our stack of transducers and
+a builder for our intended output type, which dramatically simplifies the type
+craftign in this library.
+
+Additionally, the library provides flexible memoization via an explicit
+`memoize` method, which will run the collection + transducers through
+a fold, constructing a collection using the stored builder and saving
+all of this in its state for the next operation.
 
 
 ### Footprint

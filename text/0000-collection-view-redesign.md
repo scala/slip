@@ -449,6 +449,7 @@ There were a few alternatives attempted before the current proposal:
    transducer + alternative view implementation does not prevent such a
    solution from also being viable.  Additionally this proposal represents,
    what we feel, is a much easier to maintain solution.
+   (An example solution using macros is available from [scala-blitz](https://github.com/axel-angel/scala-blitzview/tree/master/src/main/scala/scala/collection/view))
 3. Using `java.util.stream`.   Java provides a vew similar mechanism to
    Transducers in Java 8, called `Collector`.  These collectors represent
    a more limited subset of what's expressible in Transducer, Additionally
@@ -532,6 +533,9 @@ object View {
 This provides all the necessities of a View API with little impact to existing
 scala code.   The new views will be completely optional, and not part of the
 core collections library.
+
+TODO - Make a note of how new collections ONLY need to support the CanBuildFrom implicit mechanism to take advantage of the new views...
+
 
 ### Library Design and implementation
 

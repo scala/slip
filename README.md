@@ -13,6 +13,24 @@
 * [Gitter channel](https://gitter.im/scala/slip)
 * [committee meetings YouTube channel](https://www.youtube.com/channel/UCn_8OeZlf5S6sqCqntAvaIw)
 
+## Active SLIP List
+[Active SLIP List]: #active-slip-list
+
+* [Async](http://docs.scala-lang.org/sips/pending/async.html)
+  * originally proposed as a SIP, before the SLIP process was established
+
+## Helping Out
+[Helping Out]: #helping-out
+If you would like to contribute to the Scala language and core libraries by volunteering your time, there are many ways you can do so. One option is to help us track, organize and manage the SIP/SLIP activities.
+
+To volunteer to help us, please visit our [Gitter channel](https://gitter.im/scala/slip) for more general information and discussion.
+
+You can also check the current list of SIP/SLIP [help wanted issues](https://github.com/scala/slip/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) which contain largely procedural work that help us stay on top of the SIP/SLIP process. These activities require little more than time, willingness and a level head. No explicit knowledge of Scala is required in order to help us out with these issues, although you are likely to learn a lot along the way. They include tasks like contacting and tracking SIP and SLIP owners for status updates, helping coordinate between developers working on SIP/SLIPs, and a lot more.
+
+If you decide you want to help out with an issue, please add a comment to the effect that you are going to help in the comments for that issue. If you do produce results, please also update the issue with new comments to that effect. If you see an issue that has been "claimed" in the comments, but appears to have fallen dormant, please coordinate with the previous commenter and see if you can help out or take over. These tasks usually don't take more than a few hours at most, so if you see an issue that has not had any activity for a few days despite having been "claimed" by someone, feel free to either try and contact them or if unable to, take it over and get it moving again (add your own comment to that effect).
+
+Finally, reviews of SIPs and SLIPs are encouraged. You get the Scala you help to shape, if you don't help to shape it, well then you get the Scala that others help to shape. If you want to have your voice heard, check out the [SIPs](https://github.com/scala/scala.github.com/pulls) and [SLIPs](https://github.com/scala/slip/pulls) and comment on them.
+
 ## When do I need a SLIP?
 Many changes, including bug fixes and documentation improvements can be 
 implemented and reviewed via the normal GitHub pull request workflow. See the
@@ -31,16 +49,12 @@ similarity in this process or document is likely intentional, and should be
 considered flattery to the excellent work the Rust community has done in 
 putting their guidelines together.
 
-## Active SLIP List
-[Active SLIP List]: #active-slip-list
-
-* [Async](http://docs.scala-lang.org/sips/pending/async.html)
-  * originally proposed as a SIP, before the SLIP process was established
 
 ## Table of Contents
 [Table of Contents]: #table-of-contents
 * [Opening](#scala-slips)
 * [Active SLIP List]
+* [Helping Out]
 * [Table of Contents]
 * [When you need to follow this process]
 * [Before creating a SLIP]

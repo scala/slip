@@ -281,8 +281,8 @@ time a forced operation is run.
 ```scala
 val x = ArrayBuffer(1,2,3,4,5)
 val y = x.view.take(1)
-pritnln(x.take(1).mkString("")) // prints: "1"
-pritnln(y.mkString("")) // prints: "1"
+println(x.take(1).mkString("")) // prints: "1"
+println(y.mkString("")) // prints: "1"
 x.clear()
 println(x.take(1).mkString("")) // prints: ""
 println(y.mkString("")) // prints: "", previously threw IndexOutOfBoundsException
@@ -387,14 +387,14 @@ already made in the Scala collections library.
 
 # Slicing
 
-This library looses a modest amount of performance in the presence of slicing.
+This library loses a modest amount of performance in the presence of slicing.
 For example, if we have the following:
 
 ```scala
 val x = ArrayBuffer(...).slice(20,500)
 ```
 
-Then the current mechanism will ALWAYS have a constnat O(N) (wehre N =
+Then the current mechanism will ALWAYS have a constant O(N) (where N =
   the initial slice number, e.g. 20) overhead on evaluation.  The current
   view implementations can reduce this overhead.   While the overhead can be
   significant for some operations, there are two things we've found:
@@ -403,8 +403,10 @@ Then the current mechanism will ALWAYS have a constnat O(N) (wehre N =
     within the library.
 2. The overhead, for some particularly offensive scenarios, is on the order of
    30% over a custom solution.   We think this represents a minor drawback, and
-   something that could be recovered via some specific "slice view" mecahnism
+   something that could be recovered via some specific "slice view" mechanism
    that is outside the scope of this proposal.
+
+Additionally, slicing is only an issue when it is a "drop" slice, i.e. when you are removing a known quantity from the beginning of the collection.   For `dropWhile`, `takeWhile`, `take`, `slice(0,n)` performance is on par or an improvement.
 
 ## Alternatives
 

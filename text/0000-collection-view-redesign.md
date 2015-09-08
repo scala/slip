@@ -1,15 +1,16 @@
 # SLIP-NNN - Redesigning Collection Views
 
-**By: Joshua Suereth**
+**By: Joshua Suereth and Dmitry Petrashko**
 
 This proposal is an attempt to improve the usefulness and consistency of
 scala's "view" API.
 
 ## History
 
-| Date          | Version       |
-|---------------|---------------|
-| Aug 13th 2015 | Initial Draft |
+| Date          | Version            |
+|---------------|--------------------|
+| Aug 13th 2015 | Initial Draft      |
+| Sep  8th 2015 | Comment on macros  |  
 
 ## Introduction to Scala Views
 
@@ -449,6 +450,16 @@ There were a few alternatives attempted before the current proposal:
    transducer + alternative view implementation does not prevent such a
    solution from also being viable.  Additionally this proposal represents,
    what we feel, is a much easier to maintain solution.
+
+   Note that if it is done in macros - it is pretty limited and cannot go through method dispatch borders. eg
+     ```scala
+     def foo = col.view.map(_+1)
+     def bar = foo.map(_+1).sum_!
+    ```
+    In this example macros cannot do much optimization.
+    And this is an example that shows that implementing optimizations as macros rewards users for not modularizing their code.
+    Unlike this, general optimizers could. Currently the proposed views infrastructure is quite simple and general inliner(either optimistic as Scala.js linker is, or pessimistic, as the linker that @DarkDimius'es Dotty linker is) should be able to optimize this code to a simple while cycle merging the two .map(_+1) operations together after several rounds of inlining.
+
    (An example solution using macros is available from [scala-blitz](https://github.com/axel-angel/scala-blitzview/tree/master/src/main/scala/scala/collection/view))
 3. Using `java.util.stream`.   Java provides a vew similar mechanism to
    Transducers in Java 8, called `Collector`.  These collectors represent

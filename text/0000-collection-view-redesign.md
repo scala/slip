@@ -116,7 +116,7 @@ implemented such that it is NOT executed, but instead staged for later
 execution (if possible).   To do so, currently views directly extend their
 collection counterparts and override all implementations, e.g.
 
-```
+```scala
 trait TraversableViewLike[+A,
                           +Coll,
                           +This <: TraversableView[A, Coll] with TraversableViewLike[A, Coll, This]]
@@ -141,7 +141,7 @@ an operation which they cannot support.
 Furthermore, Each new node in the class tree requires extension of the memoized
 transformations that preceded it.  Here's an instance from `IndexedSeqViewLike`:
 
-```
+```scala
 trait SeqViewLike[+A,
                   +Coll,
                   +This <: SeqView[A, Coll] with SeqViewLike[A, Coll, This]]
@@ -164,7 +164,7 @@ and [SI-4332](https://issues.scala-lang.org/browse/SI-4332)
 whereby the parent-behavior of a view is getting used through inheritance, when
 in fact we'd prefer a compile time error telling us to implement a missing method.
 
-```
+```scala
 val x: ArrayBuffer[String] = ArrayBuffer("a", "b", "c")
 val y: IndexedSeq[String] = x.view map (_ + "0") // Class cast exception at runtime
 ```
@@ -214,7 +214,7 @@ For those unfamiliar with transducers we'll do a quick introduction here.
 The word Transducer is used to describe a function which operates against
 the folding function used when folding a collection.  For example:
 
-```
+```scala
 List(1,2,3).foldLeft(0) { _ + _ }
 ```
 
@@ -228,7 +228,7 @@ Generically, we can treat this folding function as having a type:
 Transducers are functions which manipulate these folding functions.  Here is
 an example interface for a Transducer:
 
-```
+```scala
 type Fold[Accumulator, -Element] = (Accumulator, Element) => Accumulator]
 trait Transducer[-A, +B] {
  def apply[Accumulator](in: Fold[Accumulator, B]): Fold[Accumulator, A]
@@ -238,8 +238,7 @@ trait Transducer[-A, +B] {
 We can define a new transducer which mimics the collection `map` operation
 for a fold.
 
-```
-
+```scala
 case class MapTransducer[A,B](f: A => B) extends Transducer[A,B] {
  override def apply[Accumulator](in: Fold[Accumulator, B]): Fold[Accumulator, A] = {
    (acc, el) => in(acc, f(el))
@@ -253,7 +252,7 @@ delegating down to the original folding function.
 
 Here's an example for how to use this transducer:
 
-```
+```scala
 def count(acc: Int, el: Int) = acc + el
 val stringLengthTd = MapTransducer[String, Int](_.length)
 val countChars = stringLengthTd(count _)
@@ -554,7 +553,7 @@ The library will be contained in a new `scala.colelction.view` package.
 This package will contain three public class/module pairings:
 
 *scala.collection.view.Transducer*
-```
+```scala
 /**
  * A transformer over Folds.  Instead of calling it a "fold transformer" or "fold mapper" or anything so blaise, we'll
  * use a nicely marketed term which doesn't convey the meaning/implications immediately, but does well with SEO.
@@ -587,7 +586,7 @@ object Transducer {
 ```
 
 *scala.collection.view.StagedCollectionOperations*
-```
+```scala
 /** A collection of staged operations (transducers) that we build up against a source collection type.
   *
   * E.g., this could be a set of Map/FlatMap/Filter/slice operations to perform on a collection.   We assume
@@ -609,7 +608,7 @@ abstract class StagedCollectionOps[E] {
 ```
 
 *scala.collection.view.View*
-```
+```scala
 /** A view represents a set of staged collection operations against an original collection.
   * Additionally, a view attempts to keep track of the most optimal collection to return from the
   * series of operations, using the `CanBuildFrom` pattern.

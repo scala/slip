@@ -767,6 +767,13 @@ This proposal leaves open for discussion/contribution several things:
    parallel collections.
 3. Additional performance analysis/consideration for Transducer implementations
    not in the prototype.
+4. Should `zip` force either of collections? It it worth it?
+5. What should be the signature of `flatMap`? should the argument function return `TraversableOnce` or a `View`?
+    [here](https://github.com/axel-angel/scala-blitzview/blob/master/src/main/scala/scala/collection/view/BlitzViews.scala#L21) @DarkDimius has a solution that allows to support both:
+
+   ```scala
+   def flatMap[C, U](f: El => U)(implicit ctx: Scheduler, viewable: BlitzView.IsViewable[U, C]): BlitzView[C]
+   ```
 
 ## References
 

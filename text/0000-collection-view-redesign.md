@@ -424,6 +424,19 @@ Then the current mechanism will ALWAYS have a constant O(N) (where N =
 
 Additionally, slicing is only an issue when it is a "drop" slice, i.e. when you are removing a known quantity from the beginning of the collection.   For `dropWhile`, `takeWhile`, `take`, `slice(0,n)` performance is on par or an improvement.
 
+There is also a question of random access.   With the current proposal, implementations for methods like `head`, `apply(n)`, `update(n)` will need to execute a fold.   For a small class of use cases, this is an issue.  For example:
+
+```scala
+val reallyBigMatrix: Array[Int] = ...
+val row1 = realylBigMatrix.view.slice(col, row*col)
+// Computations using row1
+```
+
+We feel these scenarios deserve a *different* solution than existing views, because:
+
+1. Any structure altering operations removes the performance benefit, e.g. `flatMap`, `filter`, `dropWhile`
+2. The implementation of mutable updates suffers from all the issues described before, generally failures in the presence of any structure-altering methods. 
+
 ## Alternatives
 
 There were a few alternatives attempted before the current proposal:

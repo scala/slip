@@ -318,6 +318,22 @@ users.filter(isInPittsburgh).map(_.salesPerson).groupBy(_.territory)
 
 Here, groupBy is unavailble to the `Iterator` interface.
 
+Additionally, views attempt to preserve the collection type which started a chain of operations, while
+iterators erase them.   This is a principle upheld throughout the collections API (the first type of the collection is the desired result), e.g.
+
+```scala
+Set(1,2,3).view.map(_ + 2).force // Returns Set[Int]
+Set(1,2,3).iterator.map(_ + 2).toSet[Int] // need to remember to return a set.
+```
+
+This is a bit more compelling when using `Map` types:
+
+```scala
+def addOneToValue(kv: (Int, Int)): (Int, Int) = (kv._1, kv._2 + 1)
+IntMap(1->2).view.map(addOneToValue).force // Returns an IntMap
+IntMap(1->2).iterator.map(addOneToValue).toMap // Returns a HashMap
+```
+
 // TODO - Additionally discuss preserving types, and other scenarios where
 //        a fold is more applicable, e.g. when you cannot create an Iterator.
 

@@ -1,4 +1,4 @@
-# SLIP-NNN - Redesigning Collection Views
+# SLIP-27 - Redesigning Collection Views
 
 **By: Joshua Suereth and Dmitry Petrashko**
 
@@ -10,7 +10,8 @@ scala's "view" API.
 | Date          | Version            |
 |---------------|--------------------|
 | Aug 13th 2015 | Initial Draft      |
-| Sep  8th 2015 | Comment on macros  |  
+| Sep  8th 2015 | Comment on macros  |
+| Sep 13th 2015 | Review Feedback    |
 
 ## Introduction to Scala Views
 
@@ -172,20 +173,27 @@ val y: IndexedSeq[String] = x.view map (_ + "0") // Class cast exception at runt
 
 ## Abstract
 
-Here we'd like to propose a new view library with the following goals:
+We'd like to propose the following changes:
 
-* Views should solve the original goals for scala collections, sepcifically:
-  1. Calling `.view.force` on a collection returns something that is functionally
+1. Deprecate all existing `.view` methods and `XYZView*` classes in
+   the standard library.
+2. Create a new `collection-views` module which has equivalent functionality
+   outside the standard library.
+
+The new view library/module has the following goals:
+
+* Views should solve the original goals for scala collections, specifically:
+  - Calling `.view.force` on a collection returns something that is functionally
       equivalent to the original collection, i.e. preserving as much of the
       type as was known before.
-  2. Calling `.view`, executing a sequence of transformations, and then calling
+  - Calling `.view`, executing a sequence of transformations, and then calling
       `.force` should return a collection that is functionally equivalent to
       just executing the sequence of transformations directly on the original
       collection.
-  3. Calling `.view` and a sequence of transformations should not immediately
+  - Calling `.view` and a sequence of transformations should not immediately
      execute any transformation, but instead defer the operation, e.g. `map`,
      `filter`, `slice`
-  4. Calling any operation which must be strictly evaluated will
+  - Calling any operation which must be strictly evaluated will
      result in immediate evaluation, e.g. `sum`, `fold`.
 * Views should NOT extend the collection API directly, rather they should
   have their own interface, whereby implementations can be specifically tuned
@@ -259,7 +267,7 @@ val countChars = stringLengthTd(count _)
 List("Hello", "World").foldLeft(0)(countChars) // 10
 ```
 
-Transducers represent an elegant way to stage operations against collection
+Transducers represent an elegant way to stage operations against collections
 that can be performed later.
 
 
@@ -336,6 +344,8 @@ IntMap(1->2).iterator.map(addOneToValue).toMap // Returns a HashMap
 
 // TODO - Additionally discuss preserving types, and other scenarios where
 //        a fold is more applicable, e.g. when you cannot create an Iterator.
+//        Also, there was mention of a view API on top of iterators.  Such a
+//        thing has a lot of different trade-offs.
 
 ### Counter-Examples
 
@@ -364,7 +374,7 @@ from efficient foldRight implementations.   We consider these
 collection types and algorithms deserving of their own library, that pays
 special attention to the complexities of lazy computation.
 
-The proposed view library is finely tuned for deffering foldLeft operations,
+The proposed view library is finely tuned for deferring foldLeft operations,
 and specifically for collections which are finite.
 
 ## Drawbacks
@@ -389,7 +399,7 @@ following restrictions:
     (i.e. there is an idempotent function:  
        `(Accumulator, Accumulator) => Accumulator`)
 
-There is no static mechanism in scala to enforce either of these two
+There is no static mechanism in Scala to enforce either of these two
 restrictions, therefore Parallel view design will be a bit trickier to support,
 and may require a much-restricted subset of the currently proposed
 collection methods *or* use less efficient implementations.
@@ -435,7 +445,7 @@ val row1 = realylBigMatrix.view.slice(col, row*col)
 We feel these scenarios deserve a *different* solution than existing views, because:
 
 1. Any structure altering operations removes the performance benefit, e.g. `flatMap`, `filter`, `dropWhile`
-2. The implementation of mutable updates suffers from all the issues described before, generally failures in the presence of any structure-altering methods. 
+2. The implementation of mutable updates suffers from all the issues described before, generally failures in the presence of any structure-altering methods.
 
 ## Alternatives
 
@@ -457,7 +467,7 @@ There were a few alternatives attempted before the current proposal:
     ```
     In this example macros cannot do much optimization.
     And this is an example that shows that implementing optimizations as macros rewards users for not modularizing their code.
-    Unlike this, general optimizers could. Currently the proposed views infrastructure is quite simple and general inliner(either optimistic as Scala.js linker is, or pessimistic, as the linker that @DarkDimius'es Dotty linker is) should be able to optimize this code to a simple while cycle merging the two .map(_+1) operations together after several rounds of inlining.
+    Unlike this, general optimizers could. Currently the proposed views infrastructure is quite simple and general inliner(either optimistic as Scala.js linker is, or pessimistic, as the linker that @DarkDimius'es Dotty linker is) should be able to optimize this code to a simple while cycle merging the two `.map(_+1)` operations together after several rounds of inlining.
 
    (An example solution using macros is available from [scala-blitz](https://github.com/axel-angel/scala-blitzview/tree/master/src/main/scala/scala/collection/view))
 3. Using `java.util.stream`.   Java provides a vew similar mechanism to
@@ -486,6 +496,10 @@ various tradeoffs.
 - [David Hall's NLP transducers](https://github.com/dlwh/scalanlp-fst)
   * Built-in transducers for NLP
   * Designed for the scalanlp set of libraries
+- [Martin's own transducer impl](https://gist.github.com/odersky/6b7c0eb4731058803dfd)
+  * Handles both fold-left/fold-right manipulation
+  * Struggles (perf vs. clean code) with some fold-left specific operations
+    like slicing.
 
 ## Design
 
@@ -777,13 +791,15 @@ This proposal leaves open for discussion/contribution several things:
    parallel collections.
 3. Additional performance analysis/consideration for Transducer implementations
    not in the prototype.
-4. Should `zip` force either of collections? It it worth it?
+4. Should `zip` force either of collections? Is it worth it?
 5. What should be the signature of `flatMap`? should the argument function return `TraversableOnce` or a `View`?
     [here](https://github.com/axel-angel/scala-blitzview/blob/master/src/main/scala/scala/collection/view/BlitzViews.scala#L21) @DarkDimius has a solution that allows to support both:
 
    ```scala
    def flatMap[C, U](f: El => U)(implicit ctx: Scheduler, viewable: BlitzView.IsViewable[U, C]): BlitzView[C]
    ```
+6. "Private-ness" of the API.  Should the transducers be usable outside of views or locked down completely?
+7. Should views extends GenTraversableOnce/TraversableOnce?
 
 ## References
 

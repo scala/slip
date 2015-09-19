@@ -64,6 +64,15 @@ import RightBias._
 Thereafter, any values whose compile-time type is `Either[String,B]` for any `B`
 will be usable in for comprehensions directly, with all features supported.
 
+```scala
+val a : Either[String,Int] = Right(1)
+val b : Either[String,Int] = Right(99)
+
+for( v <- a; w <- b ) yield v+w          // Right(100)
+for( v <- a; w <- b if v > 10) yield v+w // Left(EMPTY)
+```
+
+
 ### Conveniences
 
 #### Package-wide conventions
@@ -229,7 +238,7 @@ def processURL( url : String ) : Either[Error,Result] = {
 }
 ```
 
-This does compile, and almost works fine, but there is a subtle problem. If the year is bad,
+This does compile, is almost good, but there is a subtle problem. If the year is bad,
 the result of `processURL` will be `Error.Empty` rather than the more appropriate `Error.BadYear`.
 To address the fact that an empty `Either` will have context dependent meaning, a `replaceIfEmpty`
 method is proposed for biased `Either` instances:
@@ -274,7 +283,7 @@ than `Option` is so that error values can include information. Under the solutio
 proposed, however, values that result from a filter operation or pattern match failing
 can report only an opaque token, with no further information. When the cause of the
 error is fully described by the context in which it occurs at compile time, programmers
-can remedy this, either by using the `replaceIfEmpty` method as decried above, or
+can remedy this, either by using the `replaceIfEmpty` method as decribed above, or
 by defining a meaningfully empty token and restricting the scope of the bias to the
 context in which that meaning would hold.
 
@@ -290,17 +299,20 @@ the symmetry of `Either`, baking into place what had previously been only a conv
 
 [New left and right projection APIs could be defined](https://github.com/robcd/scala.github.com/blob/master/sips/pending/_posts/2012-06-29-fixing-either.md),
 so that the result of operations in a projection is a projection directly. This would eliminate some of the boilerplate of the existing API,
-but does not in and of itself solve the problem of the empty token definition, and requires deprecating and replacing existing API. This proposal
+but does not in and of itself solve the problem of the empty token definition, and requires deprecating and replacing existing API. This proposal (by Rob Dickens)
 does include an interesting suggestion of defining the empty token by requiring an implicit conversion from elements filtered by conditional
-guards to an element of the non-value type of Either. However, this requires an implicit declaration for every filter, and the information that one
-might wish to embed in the empty token may not defined in an enclosing scope, rather than in the `Either` value on which `withFilter(...)` will
-be called, so this solution cannot adequately address the problem of an insufficiently informative empty token.
+guards to an element of the non-value type of Either. However, this requires declaration of an implicit conversion for every type filtered, and the information that one
+might wish to embed in the empty token may be defined in an enclosing scope, rather than in the `Either` value on which `withFilter(...)` will
+be called, so this solution cannot adequately address the problem of an insufficiently informative empty token. (See the example above. This solution
+could not have embedded the variable `year` in an `Error.BadYear` object. Alas.)
 
 Use of some kind of [special case source rewriting](https://github.com/scala/scala/pull/4547#issuecomment-111312231) has been suggested to fix the 
-problems with `Either`. It is not obvious to me how this would be implemented, and strikes me as a not great approach to fixing broken API.
+problems with `Either`. It is not obvious to me how this would be implemented, and putting special cases into the compiler
+strikes me as a not great approach to fixing broken API.
 
-A final alternative would be to simply not solve this problem. Many other libraries have now implemented their own Either-like monadic
-disjunction types. Users could be pointed to those libraries, or can roll their own. It's not an especially challenging task.
+A final alternative would be to simply not solve this problem. Many other libraries have now implemented their own `Either`-like monadic
+disjunction types. Users could be pointed to those libraries, or can roll their own. It's not an especially challenging task. `Either` might
+simply be deprecated.
 
 ## Design
 

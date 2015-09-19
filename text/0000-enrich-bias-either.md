@@ -308,7 +308,7 @@ could not have embedded the variable `year` in an `Error.BadYear` object. Alas.)
 
 Use of some kind of [special case source rewriting](https://github.com/scala/scala/pull/4547#issuecomment-111312231) has been suggested to fix the 
 problems with `Either`. It is not obvious to me how this would be implemented, and putting special cases into the compiler
-strikes me as a not great approach to fixing broken API.
+strikes me as a not-great approach to fixing broken API.
 
 A final alternative would be to simply not solve this problem. Many other libraries have now implemented their own `Either`-like monadic
 disjunction types. Users could be pointed to those libraries, or can roll their own. It's not an especially challenging task. `Either` might
@@ -320,14 +320,15 @@ The main design goals here are:
 
 * No breaking of existing source or need to deprecate and replace existing libraries
 * Provision of a better API for those who choose to use it:
-  * Full, natural support of for comrehension features
+  * Full, natural support of all for comprehension features
   * Convenient, low-boilerplate syntax
   * Correct monadic behavior
 * Good type inference over hierarchies of polymorphic error types
 
 ## Implementation
 
-A proposed implementation exists. Either values are implicitly enriched with correct monadic functions,
+A proposed implementation [exists](https://github.com/swaldman/scala/blob/enrich-bias-either/src/library/scala/util/Either.scala). 
+`Either` values are implicitly enriched with correct monadic functions,
 biased according to users' choice of import (`LeftBias` or `RightBias`). Alternatively, users can define
 a bias for Eithers within a class, object, or package by having the enclosing scope implement `LeftBias`
 or `RightBias` traits.
@@ -343,9 +344,9 @@ next release of Scala permitting new API.
 
 The current implementation violates DRY principles, for two reasons:
 
-1. As with other Either API, implementation of the new API is repeated in mirror-image
+1. As with other `Either` API, implementation of the new API is repeated in mirror-image
    form for `Left` and `Right` (`LeftBias` and `RightBias` here), as the complexity of trying
-   to abstract over Left and Right seems more trouble than it's worth.
+   to abstract over `Left` and `Right` seems more trouble than it's worth.
 
 2. Although the core logic of `LeftBias` and `RightBias` are each centralized
    in a typeclass, for each left and right there are two separate implementations that
@@ -374,7 +375,7 @@ above.
 5. [SIP-20 Fixing Either by Rob Dickens][5]
 6. [Pull Request: Implicit enrichment as alternative to broken Either projection APIs][6]
 
-[1]: https://github.com/swaldman/scala/tree/enrich-bias-either "Enriched Either implementation"
+[1]: https://github.com/swaldman/scala/blob/enrich-bias-either/src/library/scala/util/Either.scala "Enriched Either implementation"
 [2]: http://www.mchange.com/work/enrich-bias-either/enrich-bias-either-2015-09-19/index.html#scala.util.Either "API Documentation"
 [3]: https://issues.scala-lang.org/browse/SI-7222 "SI-7222"
 [4]: https://issues.scala-lang.org/browse/SI-5589 "SI-5589"

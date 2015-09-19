@@ -372,8 +372,9 @@ above.
 2. [Extensively updated Either API documentation][2]
 3. [SI-7222: Pattern match typing fail in for comprehension][3]
 4. [SI-5589: For-comprehension on Either.RightProjection with Tuple2 extractor in generator fails to compile][4]
-5. [SIP-20 Fixing Either by Rob Dickens][5]
+5. [SIP-20: Fixing Either by Rob Dickens][5]
 6. [Pull Request: Implicit enrichment as alternative to broken Either projection APIs][6]
+7. [Implicits without the import tax, by Josh Suereth][7]
 
 [1]: https://github.com/swaldman/scala/blob/enrich-bias-either/src/library/scala/util/Either.scala "Enriched Either implementation"
 [2]: http://www.mchange.com/work/enrich-bias-either/enrich-bias-either-2015-09-19/index.html#scala.util.Either "API Documentation"
@@ -381,4 +382,5 @@ above.
 [4]: https://issues.scala-lang.org/browse/SI-5589 "SI-5589"
 [5]: https://github.com/robcd/scala.github.com/blob/master/sips/pending/_posts/2012-06-29-fixing-either.md "SIP-20"
 [6]: https://github.com/scala/scala/pull/4547 "Pull Request"
+[7]: http://jsuereth.com/scala/2011/02/18/2011-implicits-without-tax.html "Implicits without import tax"
 

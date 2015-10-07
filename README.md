@@ -16,7 +16,7 @@
 ## Active SLIP List
 [Active SLIP List]: #active-slip-list
 
-* [0022-Async](text/0022-async.html)
+* [0022-Async](text/0022-async.md)
   * originally proposed as a SIP, before the SLIP process was established
 
 ## Helping Out

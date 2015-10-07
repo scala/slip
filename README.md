@@ -16,7 +16,7 @@
 ## Active SLIP List
 [Active SLIP List]: #active-slip-list
 
-* [Async](http://docs.scala-lang.org/sips/pending/async.html)
+* [0022-Async](text/0022-async.html)
   * originally proposed as a SIP, before the SLIP process was established
 
 ## Helping Out

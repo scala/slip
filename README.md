@@ -18,6 +18,7 @@
 
 * [0022-Async](text/0022-async.md)
   * originally proposed as a SIP, before the SLIP process was established
+* [0027-View Redesign](text/0027-collection-view-redesign.md)
 
 ## Helping Out
 [Helping Out]: #helping-out

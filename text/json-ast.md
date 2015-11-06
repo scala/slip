@@ -36,6 +36,7 @@ from many of the developers/creators of popular Scala libraries, including
 * Scalatra
 * Lift
 * Play
+* SBT
 
 The issue presents itself more in frameworks/libraries that have to deal with JSON.
 As a quick example, [slick-pg](https://github.com/tminglei/slick-pg), an extension ontop
@@ -186,6 +187,54 @@ future versions of the JVM)
 For `fast`, should we make the internal `Array` private (i.e. unable to be modified once you construct
 the `JArray`/`JObject`). `Array` itself is mutable, and fast is designed to provide speed, but there are
 good arguments to make it private.
+
+## References - Quotes from [gitter](https://gitter.im/json4s/json4s)
+Note that these quotes are to demonstrate adoption/collaboration. If I have quoted out of context, please let me know, also if you want a quote
+to be removed/clarified
+
+@jroper (Play)
+> Let me just say - from my point of view, if json4s AST gets released as it is currently in the reboot branch, I would be happy. and, if it gets released with some of the changes that are being mentioned (not just my own), I would be happy. We would seek to adopt it in Play (the question would be when, not if). Right now I think this is about iterating over an optimal solution to try and find a minimum that satisfies as many people as possible - ie, we’re close enough, let’s see if we can get closer.
+
+@farmdawgnation (Lift)
+>Anyway, @mdedetrich, thanks for the work so far on this. I think there’s a lot of value in unifying AST’s. Can’t guarantee we’ll adopt it for lift-json, but it would be nice to know as a Scala developer that I could use any of the Big JSON Libs and they can interoperate without too much work. 
+ The current status quo has (unfortunately) bit me in the butt a few times.
+
+@rossabaker (json4s/http4s)
+>Two ASTs sounds complicated, but I guess it makes nobody happy to have a lack of safety paired with middling performance.
+
+> I think there's a lot of room for disagreements and innovation in codecs and traversals and DSLs and which sum types get returned. That's why there are so many JSON projects today.
+  There seems to be a pretty near consensus on how to map the JSON AST to Scala case classes. If this minimal AST is of any use to getting projects to standardize on that before adding their own library around it, cool.
+  If not, the proposal is at least a much better foundation for a json4s reboot.
+
+@JRudolf (Spray/Akka)
+> @non yes, of course, it makes sense to keep additional features per library. AFAIU the goal is to find a common denominator between json libraries that is more structured than "just Scala". On top of that diversity has its advantages.
+
+@non (jawn)
+> @jrudolph so -- just to be clear, jawn will definitely support parsing to this AST, but i'm not necessarily committing to removing my own mutable AST.
+
+@sirthias (Spray)
+> I imagine that once we have this common AST and the AST really is minimal in what it provides (as it should be) end-users will turn to convenience tools that provide XPath-like querying, lenses, (de)serialisation, etc.
+
+> Well, @mdedetrich took this on. And @non, @eed3si9n, @bryce-anderson, myself and others merely chipped in.
+
+> Gentlemen,
+  I’ve compiled a quick benchmark to compare the new AST proposals with what we currently have in spray-json and other JSON libs.
+  The interesting questions for me are: Does an Array-based “basic” AST really yield better parsing performance over what we have now? How does it compare to a Vector-based “basic” AST?
+
+@propensive (Rapture)
+> Again, I don't have much to constrain me (and hence to contribute to the discussion). However the AST ends up, I'll have a typeclass layer, and that should be quite trivial to implement.  
+> Agreed. If the AST changes more frequently than that, it undermines some of its purpose anyway...
+> It wouldn't be a terrible thing to separate the JSON4S AST code into a minimal library. But there's more of a community/political job of getting other libraries to start using it...
+
+@eed3si9n (SBT)
+> @rossabaker yes. I was able to pull out json4s-core dependency after some copy-pasta from ParserUtil. I'd like to have binary-compatible long term AST project that encodes version number in the package name.
+
+> it's the number 1 concern for me. that's why I use jawn
+  but in the case of sbt, i don't think we deal with numbers much
+  
+> I'd actually say port all that good stuff from Yoshida-san into the new json4s-ast project and start over
+
+> right. lean AST jar that's versioned should allow sbt plugins to use whatever version of json4s
 
 ## References
 

@@ -16,7 +16,9 @@ Scala currently is in a bit of a quagmire when it comes to json libraries.
 There are roughly 6 competing JSON ast libraries, all of them are slight
 variations and they all attempt to solve 2 problems (one is speed, often
 used for parsing and the other is safe immutable representation, 
-which is often used for quering)
+which is often used for quering). Here is a good 
+[link](http://manuel.bernhardt.io/2015/11/06/a-quick-tour-of-json-libraries-in-scala/)
+which shows how absurd the current situation is, the amount of duplication is huge
 
 Some time ago, casualjim (Ivan Porto Carrero) made an attempt to 
 create a json ast library (called json4s-ast) 

@@ -1,6 +1,6 @@
-# SLIP-28 - Adding JSON AST Standard
+# Adding JSON AST Standard
 
-**By: Matthew de Detrich, json4s organisation and Ivan Porto Carrero (original author) **
+** By: Matthew de Detrich, json4s organisation and Ivan Porto Carrero (original author) **
 
 This proposal is an attempt to add a json-ast library for Scala.
 

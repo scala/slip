@@ -6,9 +6,14 @@ This proposal is an attempt to add a json-ast library for Scala.
 
 ## History
 
-| Date          | Version       |
-|---------------|---------------|
-| Nov 4th 2015  | Initial Draft |
+| Date          | Version                 |
+|---------------|-------------------------|
+| Nov 4th 2015  | Initial Draft           |
+| Feb 30th 2016 | Scala Json Module Draft |
+
+## EDIT - Feb 30th 2016
+json4s-ast has now been repackaged so it uses the `scala.json` namespace. Its under a different
+git repository located at https://github.com/mdedetrich/scala-json-ast.
 
 ## Introduction to json-ast
 

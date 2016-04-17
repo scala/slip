@@ -10,6 +10,27 @@ This proposal is an attempt to add a json-ast library for Scala.
 |---------------|-------------------------|
 | Nov 4th 2015  | Initial Draft           |
 | Feb 30th 2016 | Scala Json Module Draft |
+| Apr 18th 2016 | Final Draft of Scala AST|
+
+## EDIT - Apr 18th 2016
+The Scala JSON AST located at https://github.com/mdedetrich/scala-json-ast has a final draft
+released. Apart from a larger suite of tests, the major changes are listed below
+
+- `JNumber` now stores a number as a String, which means it has proper unlimited precision. The
+number is verified at runtime with a regex to make sure its a valid JSON number. Its up to the user
+to determine how they should convert the number (i.e. if they convert it to a `Double`, they may get
+some precision loss)
+  - This should also address concerns about certain operations taking too long due to the underlying
+  type previously being a `BigDecimal`)
+  - Equals and hashCode has also been implemented, so that `JNumber("34")` == `JNumber("34.00")`. Many
+  thanks to @IChoran for his help in this regard
+- `scala.json.ast.safe.JValue` has been moved to `scala.json.ast.JValue` and `scala.json.fast.JValue`
+has been moved to `scala.json.unsafe.JValue`. This has been done to improve messaging about the intent
+of the libraries.
+- Lot more tests have been added, as well as tests for Scala.js. Scala.js can also have some benchmarks,
+however I have to set up suite for that (its not really trivial, especially for different Javascript platforms)
+- Travis has been set up properly in regards to testing
+- Documentation in general has been improved and updated
 
 ## EDIT - Feb 30th 2016
 json4s-ast has now been repackaged so it uses the `scala.json` namespace. Its under a different

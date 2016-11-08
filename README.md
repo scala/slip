@@ -14,7 +14,7 @@ If you're interested in the new SIP process, go to the [official SIP website](ht
 ## Related resources
 
 * [Gitter channel](https://gitter.im/scala/slip)
-* [committee meetings YouTube channel](https://www.youtube.com/channel/UCn_8OeZlf5S6sqCqntAvaIw)
+* [committee meetings YouTube channel](https://www.youtube.com/channel/UCn_8OeZlf5S6sqCqntAvaIw) (+ [first meeting Apr 29 2015](https://www.youtube.com/watch?v=Pd9410RgS-g))
 
 ## Active SLIP List
 [Active SLIP List]: #active-slip-list

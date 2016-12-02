@@ -2,7 +2,7 @@
 
 SLIP (the Scala Library Improvement Process) is dead.
 
-SIP (Scala Improvement Process) lives on and SPP (Scala Platform Process) is born,
+[SIP (Scala Improvement Process)](https://scala-lang.org/sips) lives on and [SPP (Scala Platform Process)](https://platform.scala-lang.org) is born,
 both under the management of the Scala Center.
 
 http://www.scala-lang.org/community/ will be kept up-to-date with current links.
